@@ -12,7 +12,10 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
 
     @IBOutlet weak var sliderCollectionView: UICollectionView!
     @IBOutlet weak var pageView: UIPageControl!
-    @IBOutlet weak var bottomCollectionView: UICollectionView!
+    @IBOutlet weak var topCollection: UICollectionView!
+    @IBOutlet weak var topLabel: UILabel!
+    @IBOutlet weak var midLabel: UILabel!
+    @IBOutlet weak var midCollection: UICollectionView!
     
     var imgArr = [  UIImage(named:"image1"),
                     UIImage(named:"image2"),
@@ -30,9 +33,11 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
             self.timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(self.changeImage), userInfo: nil, repeats: true)
         }
         sliderCollectionView.delegate = self
-        bottomCollectionView.delegate = self
+        topCollection.delegate = self
+        midCollection.delegate = self
+        midCollection.dataSource = self
         sliderCollectionView.dataSource = self
-        bottomCollectionView.dataSource = self
+        topCollection.dataSource = self
     }
 
     override func didReceiveMemoryWarning() {
@@ -58,8 +63,10 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView == self.sliderCollectionView {
             return imgArr.count
+        } else if collectionView == self.topCollection {
+            return 10
         }
-        return 20
+        return 10
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -87,15 +94,15 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
             }
             
             return cell
-        } else {
-            let cellB = collectionView.dequeueReusableCell(withReuseIdentifier: "bottomCollection", for: indexPath)
+        } else if collectionView == self.topCollection {
+            let cellB = collectionView.dequeueReusableCell(withReuseIdentifier: "topCollection", for: indexPath)
             
             cellB.backgroundColor = UIColor.gray
             
             func collectionView(_ collectionView: UICollectionView,
                                 layout collectionViewLayout: UICollectionViewLayout,
                                 sizeForItemAt indexPath: IndexPath) -> CGSize {
-                let size = bottomCollectionView.frame.size
+                let size = topCollection.frame.size
                 return CGSize(width: size.width, height: size.height)
             }
             
@@ -109,6 +116,28 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
                 return 1.0
             }
             return cellB
+        } else {
+            let cellC = collectionView.dequeueReusableCell(withReuseIdentifier: "midCollection", for: indexPath)
+            
+            cellC.backgroundColor = UIColor.blue
+            
+            func collectionView(_ collectionView: UICollectionView,
+                                layout collectionViewLayout: UICollectionViewLayout,
+                                sizeForItemAt indexPath: IndexPath) -> CGSize {
+                let size = midCollection.frame.size
+                return CGSize(width: size.width, height: size.height)
+            }
+            
+            func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+                return 1.0
+            }
+            
+            func collectionView(_ collectionView: UICollectionView, layout
+                collectionViewLayout: UICollectionViewLayout,
+                                minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+                return 1.0
+            }
+            return cellC
         }
     }
     

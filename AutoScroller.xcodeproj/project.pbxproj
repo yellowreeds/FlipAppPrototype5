@@ -60,9 +60,7 @@
 			children = (
 				0EAC6B292208AF8A0019BFAB /* AppDelegate.swift */,
 				F21BF8FD22C0D085001E6804 /* Controller */,
-				0EAC6B2D2208AF8A0019BFAB /* Main.storyboard */,
-				0EAC6B302208AF8B0019BFAB /* Assets.xcassets */,
-				0EAC6B322208AF8B0019BFAB /* LaunchScreen.storyboard */,
+				F2C38DC222C2056C00F99F5F /* VIew */,
 				0EAC6B352208AF8B0019BFAB /* Info.plist */,
 			);
 			path = AutoScroller;
@@ -76,6 +74,16 @@
 				F21BF8FB22C0D072001E6804 /* CategoryDetailViewController.swift */,
 			);
 			path = Controller;
+			sourceTree = "<group>";
+		};
+		F2C38DC222C2056C00F99F5F /* VIew */ = {
+			isa = PBXGroup;
+			children = (
+				0EAC6B2D2208AF8A0019BFAB /* Main.storyboard */,
+				0EAC6B302208AF8B0019BFAB /* Assets.xcassets */,
+				0EAC6B322208AF8B0019BFAB /* LaunchScreen.storyboard */,
+			);
+			path = VIew;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
