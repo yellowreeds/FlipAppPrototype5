@@ -2,8 +2,8 @@
 //  ViewController.swift
 //  AutoScroller
 //
-//  Created by SHUBHAM AGARWAL on 04/02/19.
-//  Copyright © 2019 SHUBHAM AGARWAL. All rights reserved.
+//  Created by Aria Bisma Wahyutama on 23/06/19.
+//  Copyright © 2019 ARIA BISMA WAHYUTAMA. All rights reserved.
 //
 
 import UIKit
@@ -11,6 +11,7 @@ import UIKit
 class ViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
     @IBOutlet weak var sliderCollectionView: UICollectionView!
+    @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var pageView: UIPageControl!
     @IBOutlet weak var topCollection: UICollectionView!
     @IBOutlet weak var topLabel: UILabel!
@@ -23,7 +24,8 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     ]
     
     var timer = Timer()
-    var counter = 0
+    var counter = 0, tag = 0
+    var labelText = "", labelDetail = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,11 +40,47 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         midCollection.dataSource = self
         sliderCollectionView.dataSource = self
         topCollection.dataSource = self
+        
+        
+        
+        scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height+100)
+    
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "detailApp" {
+            let nextVC = segue.destination as! AppDetailViewController
+            nextVC.label = labelDetail
+        } else if segue.identifier == "summaryApp" {
+            let nextVC = segue.destination as! SummaryAppViewController
+            nextVC.label = labelText
+        }
+    }
+    
+    @IBAction func topApplication(_ sender: Any) {
+        labelText = "Ini aplikasi top"
+        performSegue(withIdentifier: "summaryApp", sender: self)
+    }
+    
+    @IBAction func topRated(_ sender: Any) {
+        labelText = "Ini aplikasi rating tinggi"
+        performSegue(withIdentifier: "summaryApp", sender: self)
+    }
+    
+    @IBAction func topAppDetail(_ sender: Any) {
+        labelDetail = "ini top application ke \((sender as AnyObject).tag!)"
+        performSegue(withIdentifier: "detailApp", sender: self)
+    }
+    
+    @IBAction func topRatedApp(_ sender: Any) {
+        labelDetail = "ini aplikasi rating tinggi ke \((sender as AnyObject).tag!)"
+        performSegue(withIdentifier: "detailApp", sender: self)
+        
     }
     
     @objc func changeImage() {
@@ -64,9 +102,9 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         if collectionView == self.sliderCollectionView {
             return imgArr.count
         } else if collectionView == self.topCollection {
-            return 10
+            return 14
         }
-        return 10
+        return 14
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -97,7 +135,14 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         } else if collectionView == self.topCollection {
             let cellB = collectionView.dequeueReusableCell(withReuseIdentifier: "topCollection", for: indexPath)
             
-            cellB.backgroundColor = UIColor.gray
+            let editButton = UIButton(frame: CGRect(x:0, y:0, width:90,height:90))
+           
+            editButton.tag = indexPath.row
+            editButton.setImage(UIImage(named: "imagetest.png"), for: .normal)
+            
+            editButton.addTarget(self, action: #selector(topAppDetail), for: UIControl.Event.touchUpInside)
+            
+            cellB.addSubview(editButton)
             
             func collectionView(_ collectionView: UICollectionView,
                                 layout collectionViewLayout: UICollectionViewLayout,
@@ -119,7 +164,15 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         } else {
             let cellC = collectionView.dequeueReusableCell(withReuseIdentifier: "midCollection", for: indexPath)
             
-            cellC.backgroundColor = UIColor.blue
+            let editButton = UIButton(frame: CGRect(x:0, y:0, width:90,height:90))
+            
+            editButton.tag = indexPath.row
+            editButton.setImage(UIImage(named: "imagetest.png"), for: .normal)
+            
+            editButton.addTarget(self, action: #selector(topRatedApp), for: UIControl.Event.touchUpInside)
+            
+            cellC.addSubview(editButton)
+            
             
             func collectionView(_ collectionView: UICollectionView,
                                 layout collectionViewLayout: UICollectionViewLayout,
